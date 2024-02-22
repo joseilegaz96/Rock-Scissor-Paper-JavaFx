@@ -2,152 +2,135 @@ package org.rockpaperscissor.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
 
 import java.util.Random;
 
 public class MainController {
 
     @FXML
-    public Button btnScissors;
+    public TextField valueMachine;
     @FXML
     public Button btnPaper;
     @FXML
-    public Button btnRock;
-    @FXML
-    public Text txtResult;
-    @FXML
-    public Text scoreMachine;
-    @FXML
-    public Text scoreUser;
-    @FXML
-    public Text txtHidden;
+    public Button btnSscissor;
+    public Text messageWinner;
+    public Text playerScore;
+    public Text machineScore;
 
-    private String valueMachine[] = {"Rock", "Paper", "Scissor"};
-
-    private int scoreU = 0;
-
-    private int scoreM;
-    private int valueRandom = 0;
-
-    private Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    private int pScore;
+    private int mScore;
 
     public void initialize() {
+        String array[] = {"Rock", "Paper", "Scissor"};
         Random random = new Random();
-        valueRandom = random.nextInt(0, 3);
-        txtResult.setText(valueMachine[valueRandom]);
-        txtResult.setVisible(false);
-        txtHidden.setVisible(true);
+        int positionArray = random.nextInt(0, 3);
+
+        valueMachine.setText(array[positionArray]);
+        valueMachine.setVisible(false);
+        System.out.println(valueMachine.getText());
+        attempts();
     }
 
-    public void valueScissor(ActionEvent actionEvent) {
-        String machineValue = txtResult.getText();
+    public void rock(ActionEvent actionEvent) {
+        String getValueMachine = valueMachine.getText();
 
-        switch (machineValue) {
+        switch (getValueMachine) {
             case "Rock":
-                scoreM = scoreM + 1;
-                scoreMachine.setText(String.valueOf(scoreM));
-                alert.setTitle("Results");
-                alert.setHeaderText("Machine Wins!");
-                txtResult.setVisible(true);
-                txtHidden.setVisible(false);
-                alert.showAndWait();
+                messageWinner.setText("Draw!");
                 initialize();
                 break;
             case "Paper":
-                scoreU = scoreU + 1;
-                scoreUser.setText(String.valueOf(scoreU));
-                alert.setTitle("Results");
-                alert.setHeaderText("Player Wins!");
-                txtResult.setVisible(true);
-                txtHidden.setVisible(false);
-                alert.showAndWait();
+                messageWinner.setText("Machine Win! \nPaper win rocks");
+                mScore++;
+                machineScore.setText(String.valueOf(mScore));
                 initialize();
                 break;
             case "Scissor":
-                alert.setTitle("Empate");
-                alert.setHeaderText("Empate");
-                txtResult.setVisible(true);
-                txtHidden.setVisible(false);
-                alert.showAndWait();
+                messageWinner.setText("Player Win! \nRock Win scissors");
+                pScore++;
+                playerScore.setText(String.valueOf(pScore));
                 initialize();
                 break;
         }
 
     }
 
-    public void valuePaper(ActionEvent actionEvent) {
-        String machineValue = txtResult.getText();
+    public void paper(ActionEvent actionEvent) {
+        String getValueMachine = valueMachine.getText();
 
-        switch (machineValue) {
+        switch (getValueMachine) {
             case "Rock":
-                scoreU = scoreU + 1;
-                scoreUser.setText(String.valueOf(scoreU));
-                alert.setTitle("Results");
-                alert.setHeaderText("Players Wins!");
-                txtResult.setVisible(true);
-                txtHidden.setVisible(false);
-                alert.showAndWait();
+                messageWinner.setText("Player Win! \nPaper win rock");
+                pScore++;
+                playerScore.setText(String.valueOf(pScore));
                 initialize();
                 break;
             case "Paper":
-                alert.setTitle("Empate");
-                alert.setHeaderText("Empate");
-                txtResult.setVisible(true);
-                txtHidden.setVisible(false);
-                alert.showAndWait();
+                messageWinner.setText("Draw!");
                 initialize();
                 break;
             case "Scissor":
-                scoreM = scoreM + 1;
-                scoreMachine.setText(String.valueOf(scoreM));
-                alert.setTitle("Results");
-                alert.setHeaderText("Machine Wins!");
-                txtResult.setVisible(true);
-                txtHidden.setVisible(false);
-                alert.showAndWait();
+                messageWinner.setText("Machine Win! \nScissor win paper");
+                mScore++;
+                machineScore.setText(String.valueOf(mScore));
                 initialize();
                 break;
         }
     }
 
-    public void valueRock(ActionEvent actionEvent) {
-        String machineValue = txtResult.getText();
+    public void scissor(ActionEvent actionEvent) {
+        String getValueMachine = valueMachine.getText();
 
-        switch (machineValue) {
+        switch (getValueMachine) {
             case "Rock":
-                alert.setTitle("Empate");
-                alert.setHeaderText("Empate");
-                txtResult.setVisible(true);
-                txtHidden.setVisible(false);
-                alert.showAndWait();
+                messageWinner.setText("Machine Win! \nRocks win scissor");
+                mScore++;
+                machineScore.setText(String.valueOf(mScore));
                 initialize();
                 break;
             case "Paper":
-                scoreM = scoreM + 1;
-                scoreMachine.setText(String.valueOf(scoreM));
-                alert.setTitle("Results");
-                alert.setHeaderText("Machine Wins!");
-                txtResult.setVisible(true);
-                txtHidden.setVisible(false);
-                alert.showAndWait();
+                messageWinner.setText("Player Win! \n Scissor win paper");
+                pScore++;
+                playerScore.setText(String.valueOf(pScore));
                 initialize();
                 break;
             case "Scissor":
-                scoreU = scoreU + 1;
-                scoreUser.setText(String.valueOf(scoreU));
-                alert.setTitle("Results");
-                alert.setHeaderText("Player Wins!");
-                txtResult.setVisible(true);
-                txtHidden.setVisible(false);
-                alert.showAndWait();
+                messageWinner.setText("Draw!");
                 initialize();
                 break;
         }
 
+    }
+
+    private void attempts() {
+        if (pScore == 3) {
+            pScore = 0;
+            playerScore.setText("0");
+
+            mScore = 0;
+            machineScore.setText("0");
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Winner");
+            alert.setHeaderText("Your Winner this game");
+            alert.showAndWait();
+        }
+
+        if (mScore == 3) {
+            mScore = 0;
+            machineScore.setText("0");
+
+            pScore = 0;
+            playerScore.setText("0");
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Winner");
+            alert.setHeaderText("Machine Winner this game");
+            alert.showAndWait();
+        }
     }
 }
